@@ -13,7 +13,7 @@ const Register = () => {
   const handleSubmit = async (e) => {
     e.preventDefault()
     try {
-      const response = await axios.post('https://lingua-link-kappa.vercel.app/api/auth/register', {
+      const response = await axios.post('https://lingualink-9km6.onrender.comapi/auth/register', {
         username: name,
         email,
         password
