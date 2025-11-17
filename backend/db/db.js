@@ -1,10 +1,9 @@
 const express = require(`express`)
 const mongoose = require('mongoose')
-const MONGO_URI = process.env.MONGO_URI
 
 const connectTODB = async () =>{
     try {
-        await mongoose.connect(MONGO_URI)
+        await mongoose.connect(process.env.MONGO_URI)
         console.log('database successfullly connected');
         
     } catch {

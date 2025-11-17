@@ -3,7 +3,6 @@ const cors = require('cors')
 
 const connectTODB = require('./db/db')
 const express = require('express');
-const { Db } = require('mongodb');
 
 
 const authRoutes = require('./routes/auth-routes')
