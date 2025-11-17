@@ -29,7 +29,7 @@ app.use(cors());
 // OR, for stricter control:
 app.use(
   cors({
-    origin: "http://localhost:5173", // your frontend's address
+    origin: "https://lingua-link-kappa.vercel.app/", // your frontend's address
     methods: ["GET", "POST", "PUT", "DELETE"],
     credentials: true,
   })
