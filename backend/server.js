@@ -14,7 +14,7 @@ const authRoutes = require('./routes/auth-routes')
 
 
 const app = express()
-const PORT =  3000;
+const PORT = process.env.PORT || 3000;
 
 
 // app.use(
@@ -24,12 +24,12 @@ const PORT =  3000;
 //   })
 // );
 
-app.use(cors());
+// app.use(cors());
 
 // OR, for stricter control:
 app.use(
   cors({
-    origin: "https://lingua-link-kappa.vercel.app/", // your frontend's address
+    origin: "https://lingua-link-kappa.vercel.app",
     methods: ["GET", "POST", "PUT", "DELETE"],
     credentials: true,
   })
