@@ -2,10 +2,9 @@ const User = require('../models/user');
 const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
 
-
 const registerUser = async (req, res) => {
   try {
-    console.log('📩 Received registration data:', req.body);
+    console.log('Received registration data:', req.body);
 
     const { username, email, password, role } = req.body;
 
@@ -50,7 +49,6 @@ const registerUser = async (req, res) => {
   }
 };
 
-// ✅ LOGIN CONTROLLER (email-based login)
 const loginUser = async (req, res) => {
   try {
     const { email, password } = req.body;
@@ -87,8 +85,6 @@ const loginUser = async (req, res) => {
       process.env.JWT_SECRET_KEY,
       { expiresIn: '15m' }
     );
-
-    
 
     res.status(200).json({
       success: true,
