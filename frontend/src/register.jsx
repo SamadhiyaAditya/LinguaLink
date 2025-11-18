@@ -2,7 +2,7 @@ import React, { useState } from 'react'
 import { Link, useNavigate } from 'react-router-dom'
 import axios from 'axios'
 import { toast } from 'sonner'
-// import registerImage from '../assets/Register from Rabbit Assets.webp'
+import './auth.css'
 
 const Register = () => {
   const [name, setName] = useState('')
@@ -19,7 +19,7 @@ const Register = () => {
         password
       })
 
-      console.log('✅ Register Response:', response.data)
+      console.log('Register Response:', response.data)
 
       if (response.data.success) {
         toast.success('Registered successfully! Please login.')
@@ -28,73 +28,72 @@ const Register = () => {
         toast.error(response.data.message)
       }
     } catch (err) {
-      console.error('❌ Register Error:', err)
+      console.error('Register Error:', err)
       toast.error(err.response?.data?.message || 'Registration failed')
     }
   }
 
   return (
-    <div className='flex'>
-      <div className='w-full md:w-1/2 flex flex-col justify-center items-center p-8 md:p-12'>
-        <form onSubmit={handleSubmit} className='w-full max-w-md bg-white p-8 rounded-lg border shadow-sm'>
-          <div className='flex justify-center mb-6'>
-            <h2 className='text-xl font-medium'>Rabbit</h2>
+    <div className="auth-container">
+      <div className="auth-card">
+        <form onSubmit={handleSubmit} className="auth-form">
+          <div className="auth-header">
+            <div className="brand">LinguaLink</div>
+            <h2 className="auth-title">Create your account</h2>
+            <p className="auth-subtitle">Join us today</p>
           </div>
-          <h2 className='text-2xl font-bold text-center mb-6'>Create your account</h2>
 
-          <div className='mb-4'>
-            <label className='block text-sm font-semibold mb-2'>Name</label>
+          <div className="form-group">
+            <label htmlFor="name">Name</label>
             <input 
+              id="name"
               type='text'
               value={name}
               onChange={(e) => setName(e.target.value)}
-              className='w-full p-2 border rounded'
               placeholder='Enter your name'
               required
+              className="form-input"
             />
           </div>
 
-          <div className='mb-4'>
-            <label className='block text-sm font-semibold mb-2'>Email</label>
+          <div className="form-group">
+            <label htmlFor="email">Email</label>
             <input 
+              id="email"
               type='email'
               value={email}
               onChange={(e) => setEmail(e.target.value)}
-              className='w-full p-2 border rounded'
               placeholder='Enter your email'
               required
+              className="form-input"
             />
           </div>
 
-          <div className='mb-4'>
-            <label className='block text-sm font-semibold mb-2'>Password</label>
+          <div className="form-group">
+            <label htmlFor="password">Password</label>
             <input 
+              id="password"
               type='password'
               value={password}
               onChange={(e) => setPassword(e.target.value)}
-              className='w-full p-2 border rounded'
               placeholder='Enter your password'
               required
+              className="form-input"
             />
           </div>
 
-          <button 
-            type='submit'
-            className='w-full bg-black text-white p-2 rounded-lg font-semibold hover:bg-gray-800 transition'
-          >
+          <button type='submit' className="auth-button">
             Sign Up
           </button>
 
-          <p className='mt-6 text-center text-sm'>
-            Already have an account?{' '}
-            <Link to='/login' className='text-blue-500'>Login</Link>
-          </p>
+          <div className="auth-footer">
+            <p>
+              Already have an account?
+              <Link to='/login' className="auth-link">Log In</Link>
+            </p>
+          </div>
         </form>
       </div>
-
-      {/* <div className='hidden md:block w-1/2 bg-gray-800'>
-        <img src={registerImage} alt='Register' className='h-[750px] w-full object-cover' />
-      </div> */}
     </div>
   )
 }
