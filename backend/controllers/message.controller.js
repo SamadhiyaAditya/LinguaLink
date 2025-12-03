@@ -158,7 +158,7 @@ const getMessages = async (req, res) => {
     try {
         const { id: userToChatId } = req.params;
         const senderId = req.user.id;
-        const { cursor, limit = 10, search } = req.query;
+        const { cursor, limit = 50, search } = req.query;
 
         const whereClause = {
             OR: [

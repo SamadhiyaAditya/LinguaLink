@@ -192,7 +192,7 @@ const ChatWindow = ({ selectedFriend }) => {
 
     const handleScroll = async (e) => {
         const { scrollTop, scrollHeight } = e.target;
-        if (scrollTop === 0 && hasMore && !loadingMore && !loading) {
+        if (scrollTop < 20 && hasMore && !loadingMore && !loading) {
             setLoadingMore(true);
             const currentScrollHeight = scrollHeight;
 
