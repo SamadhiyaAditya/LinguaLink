@@ -1,0 +1,113 @@
+:root {
+  /* Clean WhatsApp-style Palette with Orange/Peach Accent */
+  --app-bg: #F0F2F5;
+  /* Light Gray for app background */
+  --sidebar-bg: #FFFFFF;
+  /* White for sidebar */
+  --chat-bg: #FFF5EE;
+  /* Light Peach for chat background */
+  --header-bg: #F0F2F5;
+  /* Light Gray for headers */
+
+  --primary: #FF7F50;
+  /* Coral (Accent) */
+  --secondary: #FFDAB9;
+  /* Peach Puff */
+
+  --brand-gradient: linear-gradient(135deg, #ff7944 0%, #fe5975 100%);
+  /* Brand Gradient */
+
+  --text-primary: #111B21;
+  /* Dark Gray/Black */
+  --text-secondary: #667781;
+  /* Medium Gray */
+
+  --msg-sent: #FFE4B5;
+  /* Light Orange for sent messages */
+  --msg-received: #FFFFFF;
+  /* White for received messages */
+
+  --border-color: #E9EDEF;
+  /* Light border */
+}
+
+* {
+  box-sizing: border-box;
+  padding: 0;
+  margin: 0;
+}
+
+body {
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  background-color: var(--app-bg);
+  color: var(--text-primary);
+  margin: 0;
+  padding: 0;
+  overflow: hidden;
+  /* Prevent body scroll */
+}
+
+a {
+  color: inherit;
+  text-decoration: none;
+}
+
+/* Scrollbar for chat */
+::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+}
+
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+::-webkit-scrollbar-thumb {
+  background: rgba(0, 0, 0, 0.2);
+  border-radius: 10px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: rgba(0, 0, 0, 0.3);
+}
+
+/* Transitions */
+.transition-all {
+  transition: all 0.2s ease-in-out;
+}
+
+.hover-scale:hover {
+  transform: scale(1.05);
+}
+
+.hover-bg:hover {
+  background-color: rgba(0, 0, 0, 0.05) !important;
+}
+
+/* Typing Animation */
+.typing-dots {
+  display: inline-block;
+  width: 20px;
+  text-align: left;
+  animation: typing 1.5s steps(4, end) infinite;
+}
+
+@keyframes typing {
+
+  0%,
+  100% {
+    content: "";
+  }
+
+  25% {
+    content: ".";
+  }
+
+  50% {
+    content: "..";
+  }
+
+  75% {
+    content: "...";
+  }
+}

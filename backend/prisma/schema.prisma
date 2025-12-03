@@ -1,0 +1,106 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "mongodb"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id             String    @id @default(auto()) @map("_id") @db.ObjectId
+  username       String    @unique
+  email          String    @unique
+  password       String
+  nativeLanguage String
+  createdAt      DateTime  @default(now())
+  updatedAt      DateTime  @updatedAt
+  profilePic     String?
+
+  sentMessages     Message[] @relation("SentMessages")
+  receivedMessages Message[] @relation("ReceivedMessages")
+
+  contacts     Contact[] @relation("UserContacts")
+  friendOf     Contact[] @relation("FriendContacts")
+  
+  groupMemberships GroupMember[]
+  createdGroups    Group[] @relation("GroupAdmin")
+}
+
+model Message {
+  id               String   @id @default(auto()) @map("_id") @db.ObjectId
+  senderId         String   @db.ObjectId
+  receiverId       String?  @db.ObjectId // Optional for group messages
+  groupId          String?  @db.ObjectId // Optional for direct messages
+  
+  contentOriginal  String
+  contentTranslated String? // For DM
+  translations     Json?    // For Group: { "es": "Hola", "fr": "Bonjour" }
+  
+  languageSource   String
+  languageTarget   String?  // Optional for group
+  tone             String?  // e.g., "formal", "casual"
+  
+  createdAt        DateTime @default(now())
+  updatedAt        DateTime? @updatedAt
+  readAt           DateTime?
+  deliveredAt      DateTime?
+
+  sender   User    @relation("SentMessages", fields: [senderId], references: [id])
+  receiver User?   @relation("ReceivedMessages", fields: [receiverId], references: [id])
+  group    Group?  @relation(fields: [groupId], references: [id])
+
+  replyToId String? @db.ObjectId
+  replyTo   Message? @relation("ReplyTo", fields: [replyToId], references: [id], onDelete: NoAction, onUpdate: NoAction)
+  replies   Message[] @relation("ReplyTo")
+}
+
+model Group {
+  id          String   @id @default(auto()) @map("_id") @db.ObjectId
+  name        String
+  description String?
+  adminId     String   @db.ObjectId
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+  
+  admin       User     @relation("GroupAdmin", fields: [adminId], references: [id])
+  members     GroupMember[]
+  messages    Message[]
+}
+
+model GroupMember {
+  id        String   @id @default(auto()) @map("_id") @db.ObjectId
+  userId    String   @db.ObjectId
+  groupId   String   @db.ObjectId
+  joinedAt  DateTime @default(now())
+  lastReadAt DateTime? @default(now())
+  
+  user      User     @relation(fields: [userId], references: [id])
+  group     Group    @relation(fields: [groupId], references: [id])
+
+  @@unique([userId, groupId])
+}
+
+enum ContactStatus {
+  PENDING
+  ACCEPTED
+  BLOCKED
+}
+
+model Contact {
+  id        String        @id @default(auto()) @map("_id") @db.ObjectId
+  userId    String        @db.ObjectId
+  friendId  String        @db.ObjectId
+  status        ContactStatus @default(PENDING)
+  nicknameUser  String?       // Nickname set by userId for friendId
+  nicknameFriend String?      // Nickname set by friendId for userId
+  blockedBy     String?       // ID of the user who blocked the contact
+  lastMessageAt DateTime?     @default(now())
+  createdAt     DateTime      @default(now())
+  updatedAt     DateTime      @updatedAt
+
+  user   User @relation("UserContacts", fields: [userId], references: [id])
+  friend User @relation("FriendContacts", fields: [friendId], references: [id])
+
+  @@unique([userId, friendId])
+}
