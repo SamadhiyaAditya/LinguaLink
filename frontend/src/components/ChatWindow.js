@@ -177,10 +177,10 @@ const ChatWindow = ({ selectedFriend }) => {
     }, [messages.length, loading, isTyping]);
 
     const handleScroll = async (e) => {
-        const { scrollTop } = e.target;
+        const { scrollTop, scrollHeight } = e.target;
         if (scrollTop === 0 && hasMore && !loadingMore && !loading) {
             setLoadingMore(true);
-            const currentScrollHeight = e.target.scrollHeight;
+            const currentScrollHeight = scrollHeight;
 
             try {
                 let url = `/messages/${selectedFriend.id}`;
@@ -195,16 +195,23 @@ const ChatWindow = ({ selectedFriend }) => {
 
                 const res = await axios.get(url, { params });
 
+                if (res.data.messages.length > 0) {
+                    setMessages(prev => [...res.data.messages, ...prev]);
+                    setCursor(res.data.nextCursor);
+                    setHasMore(!!res.data.nextCursor);
 
-                setMessages(prev => [...res.data.messages, ...prev]);
-                setCursor(res.data.nextCursor);
-                setHasMore(!!res.data.nextCursor);
-
-
-                setTimeout(() => {
-                    const newScrollHeight = e.target.scrollHeight;
-                    e.target.scrollTop = newScrollHeight - currentScrollHeight;
-                }, 0);
+                    // Maintain scroll position
+                    // We need to wait for the DOM to update with new messages
+                    // requestAnimationFrame is better than setTimeout(0) for visual updates
+                    requestAnimationFrame(() => {
+                        if (messagesContainerRef.current) {
+                            const newScrollHeight = messagesContainerRef.current.scrollHeight;
+                            messagesContainerRef.current.scrollTop = newScrollHeight - currentScrollHeight;
+                        }
+                    });
+                } else {
+                    setHasMore(false);
+                }
 
             } catch (error) {
                 console.error(error);
