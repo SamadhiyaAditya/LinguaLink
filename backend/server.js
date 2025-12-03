@@ -101,7 +101,7 @@ io.on('connection', (socket) => {
   socket.on("markAsRead", async ({ messageId, senderId }) => {
     try {
       const prisma = require("./db/prisma.js");
-      await prisma.message.update({
+      await prisma.message.updateMany({
         where: { id: messageId },
         data: { readAt: new Date() }
       });

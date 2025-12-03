@@ -169,12 +169,26 @@ const ChatWindow = ({ selectedFriend }) => {
         return () => clearTimeout(timeoutId);
     }, [selectedFriend, searchQuery, isSearching, socketInstance]);
 
-    useEffect(() => {
+    const lastMessageRef = useRef(null);
 
-        if (!loading) {
+    useEffect(() => {
+        if (loading) return;
+        if (messages.length === 0) return;
+
+        const lastMessage = messages[messages.length - 1];
+        // Only scroll to bottom if the last message (newest) has changed
+        // This prevents scrolling to bottom when loading older messages (pagination)
+        if (lastMessage?.id !== lastMessageRef.current) {
+            messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
+            lastMessageRef.current = lastMessage?.id;
+        } else if (isTyping) {
+            // Optional: Scroll to bottom if typing and already near bottom? 
+            // For now, let's allow typing to scroll if we want, or just leave it.
+            // If we want typing to scroll, we need to check if we are at bottom.
+            // Let's just stick to message updates for now to be safe.
             messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
         }
-    }, [messages.length, loading, isTyping]);
+    }, [messages, loading, isTyping]);
 
     const handleScroll = async (e) => {
         const { scrollTop, scrollHeight } = e.target;
