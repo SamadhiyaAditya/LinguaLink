@@ -45,6 +45,14 @@ const ChatWindow = ({ selectedFriend }) => {
                 setMessages(prev => prev.map(m => m.id === updatedMessage.id ? updatedMessage : m));
             });
 
+            socketInstance.on("newMessage", (newMessage) => {
+                setMessages((prev) => [...prev, newMessage]);
+                // Mark as read if we are in this chat
+                if (selectedFriend.id == newMessage.senderId || selectedFriend.id == newMessage.groupId) {
+                    socketInstance.emit("markAsRead", { messageId: newMessage.id, senderId: newMessage.senderId });
+                }
+            });
+
             socketInstance.on("typing", ({ senderId, groupId }) => {
                 if (selectedFriend?.isGroup) {
                     if (groupId === selectedFriend.id && senderId !== authUser.id) {

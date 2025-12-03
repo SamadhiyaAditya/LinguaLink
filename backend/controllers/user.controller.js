@@ -34,6 +34,8 @@ const getUsersForSidebar = async (req, res) => {
                 }
             });
 
+
+
             return {
                 ...friendUser,
                 contactId: contact.id,

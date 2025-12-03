@@ -68,9 +68,9 @@ const ChatSidebar = ({ onSelectFriend, selectedFriend }) => {
             socket.on("newMessage", (newMessage) => {
                 setFriends((prevFriends) => {
                     return prevFriends.map((friend) => {
-                        if (friend.id === newMessage.senderId) {
+                        if (friend.id == newMessage.senderId) {
                             // Only increment if not currently selected
-                            if (selectedFriend?.id !== newMessage.senderId) {
+                            if (selectedFriend?.id != newMessage.senderId) {
                                 return { ...friend, unreadCount: (friend.unreadCount || 0) + 1, lastMessageAt: new Date() };
                             }
                             return { ...friend, lastMessageAt: new Date() };
@@ -83,9 +83,9 @@ const ChatSidebar = ({ onSelectFriend, selectedFriend }) => {
             socket.on("newGroupMessage", (newMessage) => {
                 setGroups((prevGroups) => {
                     const updatedGroups = prevGroups.map((group) => {
-                        if (group.id === newMessage.groupId) {
+                        if (group.id == newMessage.groupId) {
                             // Only increment if not currently selected
-                            if (selectedFriend?.id !== newMessage.groupId) {
+                            if (selectedFriend?.id != newMessage.groupId) {
                                 return { ...group, unreadCount: (group.unreadCount || 0) + 1, lastMessageAt: new Date() };
                             }
                             return { ...group, lastMessageAt: new Date() };
@@ -618,9 +618,9 @@ const ChatSidebar = ({ onSelectFriend, selectedFriend }) => {
                                         onSelectFriend(item);
 
                                         if (isGroup) {
-                                            setGroups(prev => prev.map(g => g.id === item.id ? { ...g, unreadCount: 0 } : g));
+                                            setGroups(prev => prev.map(g => g.id == item.id ? { ...g, unreadCount: 0 } : g));
                                         } else {
-                                            setFriends(prev => prev.map(f => f.id === item.id ? { ...f, unreadCount: 0 } : f));
+                                            setFriends(prev => prev.map(f => f.id == item.id ? { ...f, unreadCount: 0 } : f));
                                         }
                                     }}
                                     className="hover-bg transition-all"
