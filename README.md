@@ -1,3 +1,5 @@
+Note - Backend is deployed on render, it may take some time to wake up.
+
 # LinguaLink – AI-Powered Multilingual Chat Application
 
 ## 1. Project Title
